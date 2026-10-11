@@ -2,6 +2,10 @@
 
 %% * Relevant packages & required template styling
 \usepackage[preprint, nonatbib]{neurips_2026} % ! THE TEMPLATE
+% Retain the template layout while accurately identifying the document type.
+\makeatletter
+\renewcommand{\@noticestring}{Technical report.}
+\makeatother
 %\usepackage[utf8]{inputenc} % allow utf-8 input
 %\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
 \usepackage{fontspec}       % Unicode font support for LuaLaTeX and XeLaTeX
