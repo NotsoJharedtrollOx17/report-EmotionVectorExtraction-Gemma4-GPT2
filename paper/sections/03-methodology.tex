@@ -9,7 +9,10 @@ produced batches of five short stories for each of ten topics in JSON format, al
 We retained the stories as generated, without manual rewriting or post-hoc quality filtering, to preserve a simple first-pass
 corpus for this partial replication. A separate template (Appendix~\ref{apdx:neutral-prompt}) produced emotionally neutral
 commands and statements for the intermediate neutral-centering calculation described below. The reported analyses therefore
-characterize this corpus-and-pipeline combination and do not establish independence from corpus artifacts.
+characterize this corpus-and-pipeline combination and do not establish independence from corpus artifacts. The current repository
+contains 100 stories per emotion (2,000 total), but the saved result artifacts were generated when the calm category contained 110
+entries. Ten accidental calm entries were subsequently removed. Exact reproduction of the historical artifacts from the corrected
+corpus has not been established by this documentation audit.
 
 \subsection{Emotion Vector Extraction}
 
@@ -151,7 +154,8 @@ To perform the steering experiments, we modify the hooked block output at each t
     \label{eqtn:emotion-steering}
 \end{equation}
 where $\tilde{\mathbf{h}}_{t,\mathtt{emotion}}^{(l)}$ is the emotion-steered hidden activation at token position $t$ and layer $l$, 
-and $\alpha$ is the steering coefficient. We set $\alpha=+0.5$ because \cite{sofroniew_emotion_2026} reports steering results at 
+and $\alpha$ is the steering coefficient. We use $\alpha=+0.5$ for the displayed heatmaps and inspected sampled continuations
+because \cite{sofroniew_emotion_2026} reports steering results at
 strength 0.5. Anthropic defines that strength relative to an average residual-stream norm over a large dataset; our implementation 
 instead scales each intervention by the current token's residual norm. Thus, $\alpha=0.5$ is a source-informed operating point rather 
 than a numerically identical reproduction of Anthropic's intervention strength, and we do not interpret it as an optimized or 
@@ -159,7 +163,10 @@ cross-model-comparable setting.
 
 \subsection{Delta Log Probability}
 
-For a fixed prompt $q$, we compare baseline and steered next-token log probabilities. For steering direction $\mathtt{emotion}$, coefficient
+For each of two fixed prompts, we compare baseline and steered next-token log probabilities at eleven coefficients,
+$\alpha\in\{-0.5,-0.4,-0.3,-0.2,-0.1,0.0,0.1,0.2,0.3,0.4,0.5\}$. This grid is present in all eight saved probability JSON files,
+covering both models and both label-set sizes. It is a token-probability diagnostic, not a repeated-generation evaluation of
+emotional tone or coherence. For a fixed prompt $q$, steering direction $\mathtt{emotion}$, coefficient
 $\alpha$, and target token $t$, the change is:
 \begin{equation}
     \Delta_{\mathtt{emotion}}(t\mid q,\alpha)=\log p_{\mathtt{emotion},\alpha}(t\mid q)-\log p_0(t\mid q)

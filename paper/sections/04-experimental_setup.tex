@@ -9,12 +9,12 @@ and scikit-learn.
 Two language models were evaluated:
 
 \begin{itemize}
-    \item \texttt{openai-community/gpt-2-medium}, a publicly available 355-million-parameter autoregressive Transformer model released by OpenAI, serving as a reproducible baseline representative of early large language models \cite{radford_language_2019}.
-    \item \texttt{google/gemma-4-e2b}, an open-weight Google model with 2.3 billion effective parameters (5.1 billion including per-layer embeddings), designed with multilingual reasoning \cite{team_gemma_2026}.
+    \item \texttt{openai-community/gpt2-medium}, a publicly available 355-million-parameter autoregressive Transformer model released by OpenAI, serving as a reproducible baseline representative of early large language models \cite{radford_language_2019}.
+    \item \texttt{google/gemma-4-E2B}, an open-weight Google model with 2.3 billion effective parameters (5.1 billion including per-layer embeddings), designed with multilingual reasoning \cite{team_gemma_2026}.
 \end{itemize}
 
 These models provide contrasting cases in architecture, scale, tokenizer, training corpus, and multilingual capability. 
-GPT-2 Medium serves as an earlier-generation baseline, whereas Gemma 4 E2B provides a modern instruction-tuned case. 
+GPT-2 Medium serves as an earlier-generation baseline, whereas Gemma 4 E2B provides a second model case.
 Recurring patterns across the two models are treated as qualitative convergence under the shared pipeline, not as 
 sufficient evidence of a general property of all Transformer representations.
 
@@ -63,7 +63,7 @@ we did not conduct a layer sweep or select the layer using the reported outcomes
 \textbf{Parameter} & \textbf{Value} \\
 \midrule
 
-Stories per emotion & 100 \\
+Current stories per emotion & 100 \\
 Neutral texts & 50 \\
 Hidden layer & 16* and 23** \\
 Hidden-state aggregation & Mean pooling \\
@@ -81,7 +81,8 @@ PCA components & 2 \\
 \begin{minipage}{0.75\linewidth}
 \footnotesize
 \textbf{Note.}
-* \texttt{openai-community/gpt-2-medium} uses hidden layer 16 ($\sim\nicefrac{2}{3}$ of layer depth). ** \texttt{google/gemma-4-e2b} uses hidden layer 23 ($\sim\nicefrac{2}{3}$ of layer depth).
+Historical artifacts used 110 calm stories; the current corpus has 100 per emotion.\\
+* \texttt{openai-community/gpt2-medium} uses hidden layer 16 ($\sim\nicefrac{2}{3}$ of layer depth). ** \texttt{google/gemma-4-E2B} uses hidden layer 23 ($\sim\nicefrac{2}{3}$ of layer depth).
 \end{minipage}
 
 \end{table}
@@ -91,12 +92,13 @@ PCA components & 2 \\
 The steering experiments were adapted from the evaluation setting used by Anthropic \cite{sofroniew_emotion_2026}. Two fixed,
 minimally specified affect-elicitation prompts (Prompt00 and Prompt01) were used to obtain continuations before and after emotion-vector
 steering. Neither prompt names a target emotion, so both provide a common context for descriptive comparison across injected directions.
-Throughout all steering experiments, a fixed
-steering coefficient of $\alpha=+0.5$ was used because the source study presents steering results at that strength. In this implementation, 
+Token-probability comparisons span eleven coefficients from $-0.5$ to $+0.5$ in increments of $0.1$ for each prompt and
+configuration. Displayed heatmaps and inspected sampled continuations use $\alpha=+0.5$, informed by the source study's reported
+setting. In this implementation,
 the intervention is scaled by the current token's residual norm; therefore, this value is a source-informed operating point, not a claim of 
 optimality or a directly comparable absolute strength across models. Text was generated using stochastic sampling with a temperature of 
 0.7 and a maximum generation length of 100 new tokens. Both prompt templates were evaluated for the 9-emotion and 20-emotion datasets 
-across \texttt{openai-community/gpt-2-medium} and \texttt{google/gemma-4-e2b}. The generation hyperparameters were held constant, although 
+across \texttt{openai-community/gpt2-medium} and \texttt{google/gemma-4-E2B}. The generation hyperparameters were held constant, although
 individual sampled continuations remain stochastic. Table~\ref{tab:steering-config} summarizes the configuration employed throughout 
 the experiments.
 
@@ -118,7 +120,8 @@ the experiments.
 \textbf{Parameter} & \textbf{Value} \\
 \midrule
 
-Steering coefficient $\alpha$ & +0.5 \\
+Probability coefficient grid & $-0.5$ to $+0.5$, step $0.1$ \\
+Heatmap / generation $\alpha$ & $+0.5$ \\
 Prompt templates & Prompt00 and Prompt01 \\
 Maximum generated tokens & 100 \\
 Temperature & 0.7 \\
@@ -138,7 +141,7 @@ Sampling & Enabled \\
 
 \subsection{Evaluation Pipeline}
 
-The evaluation followed a fixed pipeline for both \texttt{openai-community/gpt-2-medium} and \texttt{google/gemma-4-e2b}. For each
+The evaluation followed a fixed pipeline for both \texttt{openai-community/gpt2-medium} and \texttt{google/gemma-4-E2B}. For each
 model, emotion vectors were first extracted independently from the 9-emotion and 20-emotion datasets using the extraction 
 configuration described previously. The resulting emotion libraries were then evaluated through four complementary analyses. First,
 Logit Lens extraction identified the vocabulary tokens most strongly aligned with each extracted direction. Second,

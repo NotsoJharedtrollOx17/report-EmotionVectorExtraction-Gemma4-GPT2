@@ -2,12 +2,13 @@
 
 We report a first-pass, resource-constrained partial replication of selected analyses from Anthropic's study of emotion 
 concepts in Claude Sonnet 4.5. Using generated emotion-story corpora, we extract affect-associated residual-stream 
-directions from \texttt{openai-community/gpt-2-medium} and \texttt{google/gemma-4-e2b} and examine them with Logit 
+directions from \texttt{openai-community/gpt2-medium} and \texttt{google/gemma-4-E2B} and examine them with Logit
 Lens projections, principal component analysis (PCA), cosine similarity, and activation steering. Across nine- and 
 20-emotion sets, both models exhibit several label-consistent vocabulary projections and local cosine-similarity families. 
 Their PCA plots show a partial valence-like separation along PC1, but PC2 does not consistently support an arousal interpretation. 
-Steering at the source-informed coefficient $\alpha=0.5$ produces prompt- and direction-dependent changes in next-token probabilities 
-and sampled continuations, although the generations also contain repetition, markup, and unrelated content. These observations 
+Next-token probability comparisons span eleven coefficients from $-0.5$ to $+0.5$; displayed heatmaps and inspected sampled
+continuations use $+0.5$. Effects depend on the prompt and direction. Both steered and unsteered samples contain repetition,
+markup, or unrelated content, so these samples do not isolate steering's contribution to generation problems. These observations
 qualitatively converge with prior Claude and Gemma 4 E4B reports on some geometric patterns, while revealing model- and 
 label-set-dependent structure in two additional models. The corpus is generated and uncurated, the evaluation reuses 
 vector-derived target tokens, and no external affect 

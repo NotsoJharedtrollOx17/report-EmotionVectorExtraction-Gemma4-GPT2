@@ -41,8 +41,10 @@ its unembedding, including heart symbols for \texttt{loving}, Chinese \cn{震惊
 with the models' tokenizers and training regimes, but the present experiments do not isolate its cause.
 
 The intervention outputs also differ qualitatively. GPT-2 Medium often repeats label-associated words or stems, whereas Gemma 4 E2B 
-sometimes produces HTML-like markup, repeated dialogue, or indirect associations. Both behaviors show that the intervention changes 
-generation, but neither is equivalent to clean emotional control. We therefore do not rank one model as more emotionally sensitive. 
+sometimes produces HTML-like markup, repeated dialogue, or indirect associations. Unsteered samples also contain repetition or
+markup, so these inspected continuations do not isolate steering's contribution to generation problems. The token-probability
+comparisons show intervention sensitivity, while the sampled text does not independently validate emotional tone or coherence. We
+therefore do not rank one model as more emotionally sensitive.
 The residual norms, tokenizers, baseline probabilities, and generation distributions differ, and the local norm-scaled intervention 
 makes raw delta-log-probability magnitudes unsuitable as a direct cross-model effect-size comparison.
 
@@ -75,7 +77,10 @@ present context, the absence of the original implementation and fully specified 
 centering equation should be read as a source-informed interpretation, not as a verified transcription of Anthropic's internal pipeline.
 
 Third, layer depth and steering strength were transferred from source-informed conventions rather than optimized for these models. 
-No layer sweep or independent $\alpha$ sweep is reported. Moreover, extraction uses a Hugging Face hidden-state index while 
+No layer sweep was conducted. The saved token-probability comparisons do span eleven coefficients from $-0.5$ to $+0.5$, but
+sampled continuations were inspected at $+0.5$ without a prespecified repeated-seed evaluation or independent ratings across that
+grid. The coefficient sweep therefore does not establish an optimal generation setting. Moreover, extraction uses a Hugging Face
+hidden-state index while
 steering hooks the transformer block with the same numeric index; because hidden-state tuples include the embedding output, 
 a one-block alignment offset is possible. These choices do not erase the observed results, but they limit conclusions about 
 where the directions are represented and which intervention settings are most effective.
@@ -83,7 +88,9 @@ where the directions are represented and which intervention settings are most ef
 Fourth, the evaluation is primarily descriptive. PCA signs are arbitrary, no external human affect ratings are correlated with 
 the components, and no permutation or uncertainty analysis is provided. Multi-token target strings are scored with a same-position 
 log-probability approximation rather than an autoregressive sequence probability. Finally, sampled generations were not repeated 
-across a prespecified set of random seeds, so individual continuation differences cannot be separated cleanly from sampling variability.
+across a prespecified set of random seeds, so individual continuation differences cannot be separated cleanly from sampling
+variability. Repetition or markup also occurs without steering; the samples do not establish a general limitation of static linear
+vectors.
 
 \subsection{Implications and next steps}
 
